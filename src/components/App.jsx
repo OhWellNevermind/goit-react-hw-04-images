@@ -34,7 +34,6 @@ export class App extends Component {
       );
 
       if (!images.length) {
-        console.log(images.length);
         this.setState({
           isMoreImages: false,
         });
@@ -57,7 +56,6 @@ export class App extends Component {
   };
 
   render() {
-    console.log(this.state.isMoreImages);
     return (
       <Container>
         <SeacrhBar onSubmit={this.onSubmit} />
