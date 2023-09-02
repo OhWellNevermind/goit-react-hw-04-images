@@ -3,7 +3,9 @@ import { Component } from 'react';
 import { fetchImages } from 'api';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { LoadMoreButton } from './LoadMoreButton/LoadMoreButton';
-import { Container } from '@mui/material';
+import toast, { Toaster } from 'react-hot-toast';
+import { ScaleLoader } from 'react-spinners';
+import { StyledContainer } from './Container.styled';
 
 export class App extends Component {
   state = {
@@ -12,6 +14,7 @@ export class App extends Component {
     page: 1,
     isMoreImages: false,
     isLoading: false,
+    error: false,
   };
 
   onSubmit = evt => {
@@ -28,22 +31,42 @@ export class App extends Component {
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
     ) {
-      const images = await fetchImages(
-        this.state.query.split('/')[1],
-        this.state.page
-      );
-
-      if (!images.length) {
+      try {
         this.setState({
+          isLoading: true,
+          error: false,
           isMoreImages: false,
         });
-        return;
-      }
 
-      this.setState({
-        images: [...this.state.images, ...images],
-        isMoreImages: true,
-      });
+        const { images, totalHits } = await fetchImages(
+          this.state.query.split('/')[1],
+          this.state.page
+        );
+
+        if (!images.length) {
+          this.setState({
+            isMoreImages: false,
+          });
+          toast('There is no images for query like that.');
+          return;
+        }
+
+        this.setState({
+          images: [...this.state.images, ...images],
+          isMoreImages:
+            this.state.page === Math.ceil(totalHits / 12) ? false : true,
+          isLoading: false,
+        });
+      } catch (error) {
+        toast.error('Oops there is an error ocurred! Try to reload the page.');
+        this.setState({
+          error: true,
+        });
+      } finally {
+        this.setState({
+          isLoading: false,
+        });
+      }
     }
   }
 
@@ -57,15 +80,19 @@ export class App extends Component {
 
   render() {
     return (
-      <Container>
+      <StyledContainer className="py-3">
         <SeacrhBar onSubmit={this.onSubmit} />
-        {this.state.isMoreImages && (
+        <ScaleLoader color="#36d7b7" loading={this.state.isLoading} />
+        {!this.state.error && (
           <>
             <ImageGallery images={this.state.images} />
-            <LoadMoreButton onLoadMore={this.onLoadMore} />
+            {this.state.isMoreImages && (
+              <LoadMoreButton onLoadMore={this.onLoadMore} />
+            )}
           </>
         )}
-      </Container>
+        <Toaster position="top-right" />
+      </StyledContainer>
     );
   }
 }
