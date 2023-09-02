@@ -1,4 +1,4 @@
-import { Input, Button } from '@mui/material';
+import { Input } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export const SeacrhBar = ({ onSubmit }) => {
