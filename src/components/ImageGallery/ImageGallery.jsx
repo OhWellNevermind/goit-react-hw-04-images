@@ -3,7 +3,6 @@ import { StyledList } from './ImageGallery.styled';
 import PropTypes from 'prop-types';
 
 export const ImageGallery = ({ images }) => {
-  console.log(images);
   return (
     <StyledList className="gallery">
       {images.map(image => {
