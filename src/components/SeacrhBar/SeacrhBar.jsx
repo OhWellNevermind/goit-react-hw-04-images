@@ -14,7 +14,11 @@ export const SeacrhBar = ({ onSubmit }) => {
           autoFocus
           placeholder="Search images"
         />
-        <button variant="contained" type="submit" className="ms-3">
+        <button
+          variant="contained"
+          type="submit"
+          className=" d-flex justify-content-center align-items-center  ms-3 btn btn-primary  "
+        >
           <span className="button-label">Search</span>
         </button>
       </form>
