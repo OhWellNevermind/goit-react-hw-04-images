@@ -1,4 +1,6 @@
 import { StyledImg, StyledListItem } from './ImageGallery.styled';
+import PropTypes from 'prop-types';
+
 export const ImageGalleryItem = ({ image }) => {
   return (
     <StyledListItem className="gallery-item">
@@ -9,4 +11,8 @@ export const ImageGalleryItem = ({ image }) => {
       />
     </StyledListItem>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.object,
 };

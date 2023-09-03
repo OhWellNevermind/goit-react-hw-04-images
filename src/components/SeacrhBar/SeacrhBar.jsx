@@ -1,5 +1,6 @@
 import { Input } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.css';
+import PropTypes from 'prop-types';
 
 export const SeacrhBar = ({ onSubmit }) => {
   return (
@@ -19,4 +20,8 @@ export const SeacrhBar = ({ onSubmit }) => {
       </form>
     </header>
   );
+};
+
+SeacrhBar.propTypes = {
+  onSubmit: PropTypes.func,
 };
